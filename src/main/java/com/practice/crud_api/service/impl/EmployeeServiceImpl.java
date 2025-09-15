@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.practice.crud_api.dto.EmployeeDto;
 import com.practice.crud_api.entity.Employee;
+import com.practice.crud_api.exception.ResourceNotFoundException;
 import com.practice.crud_api.mapper.EmployeeMapper;
 import com.practice.crud_api.repository.EmployeeRepository;
 import com.practice.crud_api.service.EmployeeService;
@@ -41,6 +42,29 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<Employee> employees = employeeRepository.findAll();
         return employees.stream().map((employee) -> EmployeeMapper.mapToEmployeeDto(employee))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public EmployeeDto updateEmployee(Long employeeId, EmployeeDto updatedEmployee) {
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow(
+            () -> new ResourceNotFoundException("Employee not found with id: " + employeeId));
+
+        employee.setFirstName(updatedEmployee.getFirstName());
+        employee.setLastName(updatedEmployee.getLastName());
+        employee.setEmail(updatedEmployee.getEmail());
+
+        Employee updatedEmployeeObj = employeeRepository.save(employee);
+
+        return EmployeeMapper.mapToEmployeeDto(updatedEmployeeObj);
+    }
+
+    @Override
+    public void deleteEmployee(Long employeeId) {
+        Employee employee = employeeRepository.findById(employeeId).orElseThrow(
+            () -> new ResourceNotFoundException("Employee not found with id: " + employeeId));
+
+        employeeRepository.deleteById(employeeId);
+
     }
 
 }
