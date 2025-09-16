@@ -2,6 +2,7 @@ package com.practice.crud_api.service.impl;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.Map;
 import java.util.function.Function;
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +17,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @Service
-public class JWTServiceImpl implements JWTService{
+public class JWTServiceImpl implements JWTService {
 
     public String generateToken(UserDetails userDetails) {
         // Logic to generate JWT token using user details
@@ -24,6 +25,17 @@ public class JWTServiceImpl implements JWTService{
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .signWith(getSiginKey(), SignatureAlgorithm.HS256)
+                .compact();
+
+    }
+
+    public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        // Logic to generate JWT token using user details
+        return Jwts.builder().setClaims(extraClaims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 604800000))
                 .signWith(getSiginKey(), SignatureAlgorithm.HS256)
                 .compact();
 
@@ -46,7 +58,7 @@ public class JWTServiceImpl implements JWTService{
 
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder().setSigningKey(getSiginKey()).build().parseClaimsJws(token).getBody();
-    } 
+    }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUserName(token);

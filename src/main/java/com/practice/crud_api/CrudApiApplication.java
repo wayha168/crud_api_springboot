@@ -20,16 +20,16 @@ public class CrudApiApplication implements CommandLineRunner {
 		SpringApplication.run(CrudApiApplication.class, args);
 	}
 
-	public void run(String... args) throws Exception {
+	public void run(String... args) {
 		User adminAccount = userRepository.findByRole(Role.ADMIN);
-		if (null == adminAccount) {
+		if (adminAccount == null) {
 			User user = new User();
 
 			user.setEmail("admin@gmail.com");
 			user.setFirstName("Admin");
 			user.setLastName("Admin");
 			user.setRole(Role.ADMIN);
-			user.setPassword(new BCryptPasswordEncoder().encode("admin@123"));
+			user.setPassword(new BCryptPasswordEncoder().encode("admin"));
 			userRepository.save(user);
 		}
 
