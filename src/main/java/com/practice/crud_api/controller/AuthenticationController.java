@@ -4,8 +4,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.practice.crud_api.dto.JwtAuthenticationResponse;
-import com.practice.crud_api.dto.LoginRequest;
 import com.practice.crud_api.dto.SignUpRequest;
+import com.practice.crud_api.dto.SigninRequest;
 import com.practice.crud_api.entity.User;
 import com.practice.crud_api.service.AuthenticationService;
 
@@ -23,13 +23,13 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signUp(@RequestBody SignUpRequest signUpRequest) {
-        return ResponseEntity.ok(authenticationService.signUp(signUpRequest));
+    public ResponseEntity<User> signup(@RequestBody SignUpRequest signUpRequest) {
+        return ResponseEntity.ok(authenticationService.signup(signUpRequest));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<JwtAuthenticationResponse> login(@RequestBody LoginRequest loginRequest) {
-        return ResponseEntity.ok(authenticationService.logIn(loginRequest));
+    @PostMapping("/signin")
+    public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody SigninRequest signinRequest) {
+        return ResponseEntity.ok(authenticationService.signin(signinRequest));
     }
 
 }

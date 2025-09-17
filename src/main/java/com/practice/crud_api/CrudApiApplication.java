@@ -22,7 +22,7 @@ public class CrudApiApplication implements CommandLineRunner {
 
 	public void run(String... args) {
 		User adminAccount = userRepository.findByRole(Role.ADMIN);
-		if (adminAccount == null) {
+		if (null == adminAccount) {
 			User user = new User();
 
 			user.setEmail("admin@gmail.com");

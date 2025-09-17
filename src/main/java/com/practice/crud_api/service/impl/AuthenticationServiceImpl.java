@@ -8,8 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.practice.crud_api.dto.JwtAuthenticationResponse;
-import com.practice.crud_api.dto.LoginRequest;
 import com.practice.crud_api.dto.SignUpRequest;
+import com.practice.crud_api.dto.SigninRequest;
 import com.practice.crud_api.entity.Role;
 import com.practice.crud_api.entity.User;
 import com.practice.crud_api.repository.UserRepository;
@@ -30,8 +30,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final JWTService jwtService;
 
-    public User signUp(SignUpRequest signUpRequest) {
-        User user = new User();                             
+    public User signup(SignUpRequest signUpRequest) {
+        User user = new User();
 
         user.setEmail(signUpRequest.getEmail());
         user.setFirstName(signUpRequest.getFirstName());
@@ -42,11 +42,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return userRepository.save(user);
     }
 
-    public JwtAuthenticationResponse logIn(LoginRequest loginRequest) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
-                loginRequest.getPassword()));
+    public JwtAuthenticationResponse signin(SigninRequest signinRequest) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinRequest.getEmail(),
+                signinRequest.getPassword()));
 
-        var user = userRepository.findByEmail(loginRequest.getEmail())
+        var user = userRepository.findByEmail(signinRequest.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
         var jwt = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(new HashMap<>(), user);
@@ -55,7 +55,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         jwtAuthenticationResponse.setToken(jwt);
         jwtAuthenticationResponse.setRefreshToken(refreshToken);
-
+        
         return jwtAuthenticationResponse;
     }
 
