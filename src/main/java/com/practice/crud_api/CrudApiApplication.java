@@ -11,6 +11,7 @@ import com.practice.crud_api.entity.User;
 import com.practice.crud_api.repository.UserRepository;
 
 @SpringBootApplication
+
 public class CrudApiApplication implements CommandLineRunner {
 
 	@Autowired
