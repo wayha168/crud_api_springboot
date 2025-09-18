@@ -48,25 +48,30 @@ public class SecurityConfiguration {
 
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userService.userDetailsService());
-        authenticationProvider.setPasswordEncoder(passwordEncore());
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
 
     @Bean
-    public PasswordEncoder passwordEncore() {
-        return new BCryptPasswordEncoder() {
-
-            @Override
-            public String encode(CharSequence rawPassword) {
-                return rawPassword.toString();
-            }
-
-            @Override
-            public boolean matches(CharSequence rawPassword, String encodedPassword) {
-                return rawPassword.toString().equals(encodedPassword);
-            }
-        };
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
+
+    // @Bean
+    // public PasswordEncoder passwordEncore() {
+    //     return new BCryptPasswordEncoder() {
+
+    //         @Override
+    //         public String encode(CharSequence rawPassword) {
+    //             return rawPassword.toString();
+    //         }
+
+    //         @Override
+    //         public boolean matches(CharSequence rawPassword, String encodedPassword) {
+    //             return rawPassword.toString().equals(encodedPassword);
+    //         }
+    //     };
+    // }
 
     // Example: SecurityConfig.java
     @Bean
