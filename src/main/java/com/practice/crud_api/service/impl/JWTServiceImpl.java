@@ -15,7 +15,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-
 @Service
 
 public class JWTServiceImpl implements JWTService {
@@ -52,8 +51,14 @@ public class JWTServiceImpl implements JWTService {
         return claimsResolvers.apply(claims);
     }
 
+
+    // private Key getSiginKey() {
+    //     byte[] keyBytes = Decoders.BASE64.decode("${jwt.secret}");
+    //     return Keys.hmacShaKeyFor(keyBytes);
+    // }
+
     private Key getSiginKey() {
-        byte[] key = Decoders.BASE64.decode("topsecretkeytopsecretkey");
+        byte[] key = Decoders.BASE64.decode("R3JfS+4hN9XZ8k1cJ1kOuTqk4nWcRt9jWqP2Z88sHNg=");
         return Keys.hmacShaKeyFor(key);
     }
 
